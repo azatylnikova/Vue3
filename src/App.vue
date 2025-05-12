@@ -1,38 +1,41 @@
 <template>
   <div class="app">
-<post-form/>
-<post-list v-bind:posts="posts"/>
+    <h1> Страница с постами </h1>
+    <my-button @click="showDialog"> Создать пост</my-button>
+    <my-dialog  v-model:show="dialogVisible">
+      <post-form @create="createPost" />
+    </my-dialog>
+
+    <post-list :posts="posts" @remove="removePost" />
   </div>
 </template>
 <script>
 import PostForm from './components/PostForm.vue';
 import PostList from './components/PostList.vue';
+import MyDialog from './components/UI/MyDialog.vue';
 export default {
-    components: {
-        PostList, PostForm
-    },
+  components: {
+    PostList, PostForm
+  },
   data() {
     return {
       posts: [
         { id: 1, title: "JavaScript", body: "Описание поста " },
         { id: 2, title: "JavaScript 2", body: "Описание поста 2" },
         { id: 3, title: "JavaScript 3", body: "Описание поста 3" },
-      ]
+      ],
+      dialogVisible: false
     };
   },
   methods: {
-    createPost() {
-        const newPost = {
-            id: Date.now(),
-            title: this.title,
-            body: this.body
-        }
-        this.posts.push(newPost);
-        this.title= '';
-        this.body='';
+    createPost(post) {
+      this.posts.push(post);
     },
-    inputTitle(event) {
-       this.title =  event.target.value
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id !== post.id)
+    },
+    showDialog() {
+      this.dialogVisible = true
     }
   },
 };
@@ -44,8 +47,8 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+
 .app {
   padding: 20px;
 }
-
 </style>
