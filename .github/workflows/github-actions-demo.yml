@@ -1,0 +1,32 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
+on:
+  push:
+    branches:
+      - main  # или замени на нужную ветку, например "master"
+
+jobs:
+  build-vue-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🛠 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📥 Install dependencies
+        run: npm install
+
+      - name: 🏗 Build Vue project
+        run: npm run build
+
+      - name: 📂 List build output
+        run: ls -R dist
+
+      - name: ✅ Done
+        run: echo "Build process completed!"
